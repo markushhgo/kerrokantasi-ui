@@ -115,26 +115,34 @@ export class QuestionForm extends React.Component {
   }
 
   render() {
-    const {question, isPublic} = this.props;
+    const {question: {frontId, id, n_answers: nAnswers}, isPublic, isEditableQuestion} = this.props;
+    const editableQuestion = frontId || (id && !isPublic && nAnswers === 0) || isEditableQuestion;
     /**
-     * Display editable form when question is new or when the hearing is not yet public/hasn't been public.
-     * Otherwise display details of existing questions
+     * Display editable form when:
+     * - the question is new
+     * - the hearing is a draft
+     * - hearing has been published but is waiting for publishing date.
+     * - hearing is public but doesn't have any comments
+     * - hearing was previously public but was unpublished and doesn't have any comments.
+     *
+     * In all other cases display details of existing questions.
      */
-    return (question.frontId || (question.id && !isPublic && question.n_answers === 0))
+    return editableQuestion
       ? this.getEditableForm() : this.getQuestionDetails();
   }
 }
 
 QuestionForm.propTypes = {
-  question: PropTypes.object,
-  sectionId: PropTypes.string,
   addOption: PropTypes.func,
   deleteOption: PropTypes.func,
-  sectionLanguages: PropTypes.array,
-  onQuestionChange: PropTypes.func,
+  isEditableQuestion: PropTypes.bool,
+  isPublic: PropTypes.bool,
   lang: PropTypes.string,
   onDeleteExistingQuestion: PropTypes.func,
-  isPublic: PropTypes.bool,
+  onQuestionChange: PropTypes.func,
+  question: PropTypes.object,
+  sectionId: PropTypes.string,
+  sectionLanguages: PropTypes.array,
 };
 
 export default QuestionForm;
