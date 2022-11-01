@@ -17,7 +17,7 @@ import {
   closeHearing,
   closeHearingForm,
   createMapMarker,
-  deleteLastOption,
+  deleteOption,
   deleteSectionAttachment,
   deleteTemporaryQuestion,
   editQuestion,
@@ -186,9 +186,9 @@ class HearingEditor extends React.Component {
       }
     }
 
+    this.setState({errors: localErrors});
     // true if one of the keys in localErrors contain entries
     // eslint-disable-next-line no-unused-vars
-    this.setState({errors: localErrors});
     const containsError = Object.entries(localErrors).some(([k, v]) => Object.entries(v).length > 0);
     if (!containsError) {
       return dispatch(callbackAction(hearing));
@@ -255,9 +255,9 @@ class HearingEditor extends React.Component {
     dispatch(addOption(sectionId, questionId));
   }
 
-  deleteOption = (sectionId, questionId) => {
+  deleteOption = (sectionId, questionId, optionKey, useIndex) => {
     const {dispatch} = this.props;
-    dispatch(deleteLastOption(sectionId, questionId));
+    dispatch(deleteOption(sectionId, questionId, optionKey, useIndex));
   }
 
   getHearingForm() {
