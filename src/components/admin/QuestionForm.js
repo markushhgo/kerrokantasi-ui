@@ -54,10 +54,17 @@ export class QuestionForm extends React.Component {
             </div>
             <div style={{flex: '1', marginTop: '48px', marginLeft: '15px'}}>
               {
-                question.options.length > 2 && index === question.options.length - 1 &&
+                question.options.length > 2 &&
                 <Button
                   bsStyle="danger"
-                  onClick={() => deleteOption(sectionId, question.frontId || question.id, index)}
+                  onClick={() =>
+                    deleteOption(sectionId, (question.frontId || question.id), (option.id || index), !option.id)
+                    // The 2nd params question.frontId exists only when creating a new question that hasn't been saved,
+                    // if it's falsy -> use the actual .id value.
+                    // Third param works in a similar manner, option.id exists for options that have been saved,
+                    // when deleting options that haven't been saved -> use the index number.
+                    // Fourth param is true IF option.id is falsy -> true when deleting options that haven't been saved.
+                }
                 >
                   <Icon style={{fontSize: '24px'}} className="icon" name="trash" />
                 </Button>
