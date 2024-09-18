@@ -22,7 +22,6 @@ USER appuser
 
 # Install dependencies
 COPY --chown=appuser:appuser package.json yarn.lock /app/
-COPY --chown=appuser:appuser config_dev.toml.example /app/config_dev.toml
 RUN yarn && yarn cache clean --force
 
 # Copy all files
