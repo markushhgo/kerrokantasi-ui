@@ -18,17 +18,12 @@ USER root
 RUN apt-install.sh build-essential
 RUN git clone -c http.sslverify=false https://github.com/markushhgo/kerrokantasi-ui-turku /kerrokantasi-ui-turku
 
-# Use non-root user
-USER appuser
-
 # Install dependencies
-COPY --chown=appuser:appuser package.json yarn.lock /app/
+COPY package.json yarn.lock /app/
+RUN yarn install --frozen-lockfile && yarn cache clean --force
 RUN yarn add /kerrokantasi-ui-turku
-RUN yarn && yarn cache clean --force
-
 # Copy all files
-COPY --chown=appuser:appuser . .
-RUN yarn add /kerrokantasi-ui-turku
+COPY . .
 
 # Compile bundle
 RUN yarn build
